@@ -10,7 +10,7 @@ cd organizador-tarefas
 npm install
 
 # 3. Configure as variáveis de ambiente
-# Copie o arquivo de exemplo e edite com suas credenciais do Supabase
+Copie o arquivo de exemplo e edite com suas credenciais do Supabase
 cp .env.example .env
 
 # 4. Inicie o servidor de desenvolvimento
