@@ -4,7 +4,7 @@
 
 # 1. Clone o repositório
 git clone https://github.com/FAVFelipe/organizador-tarefas.git
-cd organizador-tarefas-notas
+cd organizador-tarefas
 
 # 2. Instale as dependências
 npm install
@@ -17,12 +17,15 @@ cp .env.example .env
 npm run dev
 
 # Acesse em:
-# http://localhost:5173
+http://localhost:5173
 
 # Deploy:
-# Frontend -> Vercel
-# Banco e autenticação -> Supabase
+Frontend -> Vercel
 
-Demonstração
+Banco e autenticação -> Supabase
 
-Adicione aqui capturas de tela da aplicação (ex.: tela de login, dashboard, lista de tarefas e notas).
+# Demonstração
+
+<img width="609" height="551" alt="image" src="https://github.com/user-attachments/assets/c300b9fc-77ba-43ba-b521-665d28a10401" />
+
+<img width="933" height="540" alt="image" src="https://github.com/user-attachments/assets/5b99562d-0dd6-404c-850a-788bcd31776e" />
