@@ -3,7 +3,7 @@
 ### Tecnologias: React, Vite, TypeScript, TailwindCSS, shadcn/ui, Supabase
 
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/organizador-tarefas-notas.git
+git clone https://github.com/FAVFelipe/organizador-tarefas.git
 cd organizador-tarefas-notas
 
 # 2. Instale as dependências
