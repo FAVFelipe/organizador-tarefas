@@ -37,5 +37,4 @@ http://localhost:5173
 
 # Demonstração
 
-<img width="609" height="551" alt="image" src="https://github.com/user-attachments/assets/c300b9fc-77ba-43ba-b521-665d28a10401" />
 <img width="933" height="540" alt="image" src="https://github.com/user-attachments/assets/5b99562d-0dd6-404c-850a-788bcd31776e" />
