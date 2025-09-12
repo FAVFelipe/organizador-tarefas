@@ -13,9 +13,10 @@ import { useToast } from '@/hooks/use-toast';
 interface AddNoteDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onNoteCreated?: () => void;
 }
 
-const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ open, onOpenChange }) => {
+const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ open, onOpenChange, onNoteCreated }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('personal');
@@ -69,9 +70,10 @@ const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ open, onOpenChange }) => 
       setCategory('personal');
       setColor('#fef3c7');
       onOpenChange(false);
+      onNoteCreated?.();
       
       // Refresh the page to show new note
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       toast({
         title: 'Erro',

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,13 +27,54 @@ const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showAddTask, setShowAddTask] = useState(false);
   const [showAddNote, setShowAddNote] = useState(false);
+  const [taskCounts, setTaskCounts] = useState<Record<string, number>>({});
+  const [noteCounts, setNoteCounts] = useState<Record<string, number>>({});
 
   const categories = [
-    { id: 'all', label: 'Todas', count: 0 },
-    { id: 'work', label: 'Trabalho', count: 0 },
-    { id: 'personal', label: 'Pessoal', count: 0 },
-    { id: 'study', label: 'Estudos', count: 0 }
+    { id: 'all', label: 'Todas', count: (taskCounts.all || 0) + (noteCounts.all || 0) },
+    { id: 'work', label: 'Trabalho', count: (taskCounts.work || 0) + (noteCounts.work || 0) },
+    { id: 'personal', label: 'Pessoal', count: (taskCounts.personal || 0) + (noteCounts.personal || 0) },
+    { id: 'study', label: 'Estudos', count: (taskCounts.study || 0) + (noteCounts.study || 0) }
   ];
+
+  useEffect(() => {
+    if (user) {
+      fetchCounts();
+    }
+  }, [user]);
+
+  const fetchCounts = async () => {
+    try {
+      // Fetch task counts
+      const { data: tasks } = await supabase
+        .from('tasks')
+        .select('category')
+        .eq('user_id', user?.id);
+
+      // Fetch note counts  
+      const { data: notes } = await supabase
+        .from('notes')
+        .select('category')
+        .eq('user_id', user?.id);
+
+      // Calculate task counts
+      const taskCountMap: Record<string, number> = { all: tasks?.length || 0 };
+      tasks?.forEach(task => {
+        taskCountMap[task.category] = (taskCountMap[task.category] || 0) + 1;
+      });
+
+      // Calculate note counts
+      const noteCountMap: Record<string, number> = { all: notes?.length || 0 };
+      notes?.forEach(note => {
+        noteCountMap[note.category] = (noteCountMap[note.category] || 0) + 1;
+      });
+
+      setTaskCounts(taskCountMap);
+      setNoteCounts(noteCountMap);
+    } catch (error) {
+      console.error('Error fetching counts:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -161,11 +203,13 @@ const Dashboard = () => {
       <AddTaskDialog 
         open={showAddTask} 
         onOpenChange={setShowAddTask}
+        onTaskCreated={fetchCounts}
       />
       
       <AddNoteDialog 
         open={showAddNote} 
         onOpenChange={setShowAddNote}
+        onNoteCreated={fetchCounts}
       />
     </div>
   );

@@ -17,12 +17,14 @@ import { useToast } from '@/hooks/use-toast';
 interface AddTaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onTaskCreated?: () => void;
 }
 
-const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange }) => {
+const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange, onTaskCreated }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium');
+  const [category, setCategory] = useState('personal');
   const [dueDate, setDueDate] = useState<Date | undefined>();
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
@@ -41,6 +43,7 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange }) => 
           title: title.trim(),
           description: description.trim() || null,
           priority,
+          category,
           due_date: dueDate?.toISOString() || null
         });
 
@@ -55,11 +58,13 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange }) => 
       setTitle('');
       setDescription('');
       setPriority('medium');
+      setCategory('personal');
       setDueDate(undefined);
       onOpenChange(false);
+      onTaskCreated?.();
       
       // Refresh the page to show new task
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       toast({
         title: 'Erro',
@@ -101,7 +106,7 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange }) => 
             />
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label>Prioridade</Label>
               <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
@@ -112,6 +117,20 @@ const AddTaskDialog: React.FC<AddTaskDialogProps> = ({ open, onOpenChange }) => 
                   <SelectItem value="low">Baixa</SelectItem>
                   <SelectItem value="medium">Média</SelectItem>
                   <SelectItem value="high">Alta</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Categoria</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="personal">Pessoal</SelectItem>
+                  <SelectItem value="work">Trabalho</SelectItem>
+                  <SelectItem value="study">Estudos</SelectItem>
                 </SelectContent>
               </Select>
             </div>

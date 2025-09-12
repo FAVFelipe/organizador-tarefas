@@ -25,6 +25,7 @@ interface Task {
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
   due_date: string | null;
+  category: string;
   created_at: string;
   updated_at: string;
 }
@@ -131,7 +132,8 @@ const TaskList: React.FC<TaskListProps> = ({ searchTerm, selectedCategory }) => 
   const filteredTasks = tasks.filter(task => {
     const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (task.description && task.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    return matchesSearch;
+    const matchesCategory = selectedCategory === 'all' || task.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
 
   const completedTasks = filteredTasks.filter(task => task.completed);
