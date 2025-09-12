@@ -38,3 +38,5 @@ http://localhost:5173
 # Demonstração
 
 <img width="933" height="540" alt="image" src="https://github.com/user-attachments/assets/5b99562d-0dd6-404c-850a-788bcd31776e" />
+
+Interface área principal do app.
